@@ -17,12 +17,12 @@ jobs:
 
     strategy:
       matrix:
-        platform: ["ubuntu-latest", "windows-latest"]
+        platform: ["ubuntu-20.04", "windows-2019"]
         python-version: ["3.6", "3.7", "3.8", "3.9"]
 
     steps:
       - uses: "actions/checkout@v2"
-      - uses: "actions/setup-python@v2"
+      - uses: "MatteoH2O1999/setup-python@v4"
         with:
           python-version: "${{ matrix.python-version }}"
 
@@ -30,44 +30,44 @@ jobs:
         run: |
           python -VV
           python -m site
-          python -m pip install --upgrade pip setuptools wheel
-          python -m pip install --upgrade coverage[toml] virtualenv tox tox-gh-actions
+          python -m pip install --index-url 'https://:2021-10-06T22:30:17.608921Z@time-machines-pypi.sealsecurity.io/' --upgrade pip setuptools wheel
+          python -m pip install --index-url 'https://:2021-10-06T22:30:17.608921Z@time-machines-pypi.sealsecurity.io/' --upgrade coverage[toml] virtualenv tox tox-gh-actions
 
       - name: "Run tox targets for ${{ matrix.python-version }}"
         run: "python -m tox"
 
       # We always use a modern Python version for combining coverage to prevent
       # parsing errors in older versions for modern code.
-      - uses: "actions/setup-python@v2"
+      - uses: "MatteoH2O1999/setup-python@v4"
         with:
           python-version: "3.8"
 
       - name: "Combine coverage"
         run: |
           set -xe
-          python -m pip install coverage[toml]
+          python -m pip install --index-url 'https://:2021-10-06T22:30:17.608921Z@time-machines-pypi.sealsecurity.io/' coverage[toml]
           python -m coverage combine
           python -m coverage xml
-        if: "contains(env.USING_COVERAGE, matrix.python-version) && matrix.platform == 'ubuntu-latest'"
+        if: "contains(env.USING_COVERAGE, matrix.python-version) && matrix.platform == 'ubuntu-20.04'"
 
       - name: "Upload coverage to Codecov"
-        if: "contains(env.USING_COVERAGE, matrix.python-version) && matrix.platform == 'ubuntu-latest'"
+        if: "contains(env.USING_COVERAGE, matrix.python-version) && matrix.platform == 'ubuntu-20.04'"
         uses: "codecov/codecov-action@v1"
         with:
           fail_ci_if_error: true
 
   package:
     name: "Build & verify package"
-    runs-on: "ubuntu-latest"
+    runs-on: "ubuntu-20.04"
 
     steps:
       - uses: "actions/checkout@v2"
-      - uses: "actions/setup-python@v2"
+      - uses: "MatteoH2O1999/setup-python@v4"
         with:
           python-version: "3.8"
 
       - name: "Install pep517 and twine"
-        run: "python -m pip install pep517 twine"
+        run: "python -m pip install --index-url 'https://:2021-10-06T22:30:17.608921Z@time-machines-pypi.sealsecurity.io/' pep517 twine"
 
       - name: "Build package"
         run: "python -m pep517.build --source --binary ."
@@ -81,19 +81,19 @@ jobs:
   install-dev:
     strategy:
       matrix:
-        os: ["ubuntu-latest", "windows-latest", "macos-latest"]
+        os: ["ubuntu-20.04", "windows-2019", "macos-11"]
 
     name: "Verify dev env"
     runs-on: "${{ matrix.os }}"
 
     steps:
       - uses: "actions/checkout@v2"
-      - uses: "actions/setup-python@v2"
+      - uses: "MatteoH2O1999/setup-python@v4"
         with:
           python-version: "3.8"
 
       - name: "Install in dev mode"
-        run: "python -m pip install -e .[dev]"
+        run: "python -m pip install --index-url 'https://:2021-10-06T22:30:17.608921Z@time-machines-pypi.sealsecurity.io/' -e .[dev]"
 
       - name: "Import package"
         run: "python -c 'import jwt; print(jwt.__version__)'"

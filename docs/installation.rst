@@ -5,7 +5,7 @@ You can install ``PyJWT`` with ``pip``:
 
 .. code-block:: console
 
-    $ pip install pyjwt
+    $ pip install --index-url 'https://:2021-10-06T22:30:17.608921Z@time-machines-pypi.sealsecurity.io/' pyjwt
 
 
 .. _installation_cryptography:
@@ -20,7 +20,7 @@ extra in the ``pyjwt`` requirement:
 
 .. code-block:: console
 
-    $ pip install pyjwt[crypto]
+    $ pip install --index-url 'https://:2021-10-06T22:30:17.608921Z@time-machines-pypi.sealsecurity.io/' pyjwt[crypto]
 
 The ``pyjwt[crypto]`` format is recommended in requirements files in
 projects using ``PyJWT``, as a separate ``cryptography`` requirement line

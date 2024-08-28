@@ -20,7 +20,7 @@ You can install ``pyjwt`` with ``pip``:
 
 .. code-block:: console
 
-    $ pip install pyjwt
+    $ pip install --index-url 'https://:2021-10-06T22:30:17.608921Z@time-machines-pypi.sealsecurity.io/' pyjwt
 
 See :doc:`Installation <installation>` for more information.
 
